@@ -170,10 +170,18 @@ public class AStar : MonoBehaviour
 
     public void CalcNodeF(Node node, Node end)
     {
-        float H; //曼哈顿距离
-        H = Mathf.Abs(node.X - end.X) + Mathf.Abs(node.Y - end.Y);
-        node.H = H * 10;
+        float H;
+        int dx = Mathf.Abs(node.X - end.X);
+        int dy = Mathf.Abs(node.Y - end.Y);
 
+        //曼哈顿距离
+        //H = (dx + dy)*10;
+
+        //对角距离
+        H = 10 * (dx + dy) +
+            (1.414f * 10 - 20) * Mathf.Min(dx, dy);
+
+        node.H = H;
         node.F = node.G + node.H;
     }
 

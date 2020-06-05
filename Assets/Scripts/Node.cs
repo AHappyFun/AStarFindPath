@@ -13,7 +13,10 @@ public class Node
     public bool isWall; //是否障碍
 
     public Node parent;
+    public Map map;
     private Renderer nodeRender;
+    private NodeItem nodeItem;
+
 
     public Node(int x, int y, Node parent = null)
     {
@@ -49,6 +52,9 @@ public class Node
         node.transform.position = new Vector3(this.X + 0.5f, this.Y + 0.5f, 0f);
         node.transform.name = "Node(" + X + "," + Y + ")";
         nodeRender = node.GetComponent<Renderer>();
+
+        nodeItem = node.GetComponent<NodeItem>();
+        nodeItem.SetNode(this);
     }
 
     public void ShowPathNode()
@@ -58,5 +64,36 @@ public class Node
         {
             parent.ShowPathNode();
         }
+    }
+
+    public void ReSetNode()
+    {
+        F = 0;
+        G = 0;
+        H = 0;
+        isWall = false;
+        parent = null;
+        nodeRender.material.SetColor("_Color", Color.white);
+    }
+
+    public void ReSetNormalNode()
+    {
+        F = 0;
+        G = 0;
+        H = 0;
+        parent = null;
+        if(!isWall)
+            nodeRender.material.SetColor("_Color", Color.white);
+    }
+
+
+    public void SetMap(Map m)
+    {
+        map = m;
+    }
+    public void SetEndNode()
+    {
+        map.ReFind();
+        map.StartFindPath(map.nodes[0,0], this);
     }
 }
