@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Map : MonoBehaviour
 {
-
+    public Player player;
     public AStar Astarpath;
 
     public int Height = 4;
@@ -15,7 +15,7 @@ public class Map : MonoBehaviour
     void Start()
     {
         InitMap();
-        //StartFindPath();
+        player.SetCurNode(nodes[0, 0]);
     }
 
     void InitMap()
@@ -33,19 +33,10 @@ public class Map : MonoBehaviour
                 nodes[i, j].SetIsWall(wall);
             }
         }
-        //nodes[4, 4].SetIsWall(true);
-        //nodes[5, 4].SetIsWall(true);
-        //nodes[6, 4].SetIsWall(true);
-        
-        //nodes[1, 1].SetIsWall(true);
-        //nodes[2, 3].SetIsWall(true);
     }
 
     public void StartFindPath(Node start, Node end)
     {
-        //Astarpath.AStarPath(nodes[3,2], nodes[8,8]);
-        //ShowPath(nodes[8,8]);
-
         Astarpath.AStarPath(start, end);
         ShowPath(end);
     }
@@ -53,6 +44,7 @@ public class Map : MonoBehaviour
     void ShowPath(Node end)
     {
         end.ShowPathNode();
+        player.MoveToEnd(end);
     }
 
     //重新随机一下Map
@@ -61,7 +53,7 @@ public class Map : MonoBehaviour
         foreach (Node item in nodes)
         {
             item.ReSetNode();
-            if (item.X == 0 && item.Y == 0)
+            if (item.X == player.GetCurNode().X && item.Y == player.GetCurNode().Y)
                 continue;
             bool wall = Random.Range(0,10) > 7f;
             item.SetIsWall(wall);

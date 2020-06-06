@@ -94,6 +94,11 @@ public class Node
     public void SetEndNode()
     {
         map.ReFind();
-        map.StartFindPath(map.nodes[0,0], this);
+        map.StartFindPath(map.player.GetCurNode(), this);
+    }
+
+    public NodeItem GetNodeItem()
+    {
+        return nodeItem;
     }
 }
